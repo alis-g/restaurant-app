@@ -6,6 +6,7 @@ export default function CartNavigator() {
     return(
         <Stack.Navigator>
             <Stack.Screen name="Cart" component={CartScreen} options={{title: 'Cart'}} />
+            <Stack.Screen name="Checkout" component={CartScreen} options={{title: 'Cart'}} />
         </Stack.Navigator>
      );
 }
