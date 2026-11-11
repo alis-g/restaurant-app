@@ -31,9 +31,9 @@ export default function HomeScreen() {
              <View style={styles.section}>
                 <Text style={styles.sectionTitle}>Categories</Text>
                 {categories.map((category) => (
-                    
+                    <Link screen="Category" params={{categoryId: category.id, categoryName: category.title}} style={{marginBottom: 12}}>
                         <CategoryCard key={category.id} title={category.title} />
-                    
+                    </Link>
                 ))}
             </View>
         </ScrollView>
