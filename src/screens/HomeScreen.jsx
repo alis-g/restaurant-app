@@ -22,16 +22,21 @@ export default function HomeScreen() {
                 <FlatList
                     data={featuredItems}
                     keyExtractor={(item) => item.id}
-                    renderItem={({ item }) => <FeaturedCard {...item} />}
+                    renderItem={({ item }) => (
+                        <Link screen="Details" params={{ item }} style={{ marginRight: 12 }}>
+                            <FeaturedCard {...item} />
+                        </Link>
+
+                    )}
                     horizontal
                     contentContainerStyle={styles.featuredList}
                 />
             </View>
 
-             <View style={styles.section}>
+            <View style={styles.section}>
                 <Text style={styles.sectionTitle}>Categories</Text>
                 {categories.map((category) => (
-                    <Link screen="Category" params={{categoryId: category.id, categoryName: category.title}} style={{marginBottom: 12}}>
+                    <Link screen="Category" params={{ categoryId: category.id, categoryName: category.title }} style={{ marginBottom: 12 }}>
                         <CategoryCard key={category.id} title={category.title} />
                     </Link>
                 ))}
