@@ -5,6 +5,7 @@ import { mealApi } from "../api";
 import SizeSelector from "../components/SizeSelector";
 import ExtrasSelector from "../components/ExtrasSelector";
 import QuantityStepper from "../components/QuantityStepper";
+import { calculateTotalPrice } from "../utils/cartUtils";
 
 export const AVAILABLE_EXTRAS = [
     'Extra cheese',
@@ -19,9 +20,9 @@ export default function DetailsScreen({
     navigation,
 }) {
     const [meal, setMeal] = useState({})
-    const [size, setSize] = useState(null)
+    const [size, setSize] = useState('S')
     const [extras, setExtras] = useState([])
-     const [qty, setQty] = useState(1);
+    const [qty, setQty] = useState(1);
     const mealId = route.params.mealId;
 
     useEffect(() => {
@@ -37,6 +38,8 @@ export default function DetailsScreen({
                 : [...prevExtras, extra]
         );
     };
+
+    const totalPrice = calculateTotalPrice(meal.price || 0, size, extras, qty)
 
     return (
         <View style={styles.container}>
@@ -70,9 +73,9 @@ export default function DetailsScreen({
                         <Text style={styles.qtyLabel}>Quantity</Text>
                         <QuantityStepper
                             qty={qty}
-                            onIncrement={() => setQty(qty + 1)}
-                            onDecrement={() => qty > 1 && setQty(qty - 1)}
-                        /> 
+                            onIncrement={() => setQty(q => q + 1)}
+                            onDecrement={() => setQty(q => q > 1 ? q - 1 : q)}
+                        />
                     </View>
                 </View>
             </ScrollView>
@@ -80,7 +83,7 @@ export default function DetailsScreen({
             <View style={styles.footer}>
                 <View style={styles.priceContainer}>
                     <Text style={styles.totalLabel}>Total</Text>
-                    <Text style={styles.totalPrice}>${(meal.price || 0).toFixed(2)}</Text>
+                    <Text style={styles.totalPrice}>${totalPrice.toFixed(2)}</Text>
                 </View>
                 <View style={styles.footerButtons}>
                     <Button
