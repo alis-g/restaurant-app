@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { mealApi } from "../api";
 import SizeSelector from "../components/SizeSelector";
 import ExtrasSelector from "../components/ExtrasSelector";
+import QuantityStepper from "../components/QuantityStepper";
 
 export const AVAILABLE_EXTRAS = [
     'Extra cheese',
@@ -20,6 +21,7 @@ export default function DetailsScreen({
     const [meal, setMeal] = useState({})
     const [size, setSize] = useState(null)
     const [extras, setExtras] = useState([])
+     const [qty, setQty] = useState(1);
     const mealId = route.params.mealId;
 
     useEffect(() => {
@@ -66,11 +68,11 @@ export default function DetailsScreen({
 
                     <View style={styles.qtySection}>
                         <Text style={styles.qtyLabel}>Quantity</Text>
-                        {/* <QuantityStepper
+                        <QuantityStepper
                             qty={qty}
                             onIncrement={() => setQty(qty + 1)}
                             onDecrement={() => qty > 1 && setQty(qty - 1)}
-                        /> */}
+                        /> 
                     </View>
                 </View>
             </ScrollView>
