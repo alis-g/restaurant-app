@@ -1,10 +1,18 @@
-import { FlatList, ScrollView, StyleSheet, Text, View } from "react-native";
-import { categories, featuredItems } from "../data/data";
+import { Alert, FlatList, ScrollView, StyleSheet, Text, View } from "react-native";
+import { featuredItems } from "../data/data";
 import FeaturedCard from "../components/FeaturedCard";
 import CategoryCard from "../components/CategoryCard";
 import { Link } from "@react-navigation/native";
+import { useEffect, useState } from "react";
+import { categoryApi } from "../api";
 
 export default function HomeScreen() {
+    const [ categories, setCategories] = useState([])
+    useEffect(() => {
+        categoryApi.getAll()
+        .then(setCategories)
+        .catch((error) => Alert.alert('Error', error.message))
+    }, [])
     return (
         <ScrollView style={styles.container}>
             <View style={styles.header}>
