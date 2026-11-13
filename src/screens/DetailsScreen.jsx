@@ -1,28 +1,37 @@
-import { StyleSheet, View, ScrollView, Image, Text } from "react-native";
+import { StyleSheet, View, ScrollView, Image, Text, Alert } from "react-native";
 import Button from "../components/Button";
+import { useEffect, useState } from "react";
+import { mealApi } from "../api";
 
 
 export default function DetailsScreen({
     route,
     navigation,
 }) {
-    const item = route.params.item;
+    const [meal, setMeal] = useState({})
+    const mealId = route.params.mealId;
+
+    useEffect(()=>{
+        mealApi.getById(mealId)
+        .then(setMeal)
+        .catch((error) => Alert.alert('Error', error.message))
+    },[mealId])
 
     return (
         <View style={styles.container}>
             <ScrollView showsVerticalScrollIndicator={false}>
-                {item.imageUrl && (
+                {meal.imageUrl && (
                     <Image
-                        source={{ uri: item.imageUrl }}
+                        source={{ uri: meal.imageUrl }}
                         style={styles.image}
                         resizeMode="cover"
                     />
                 )}
 
                 <View style={styles.content}>
-                    <Text style={styles.name}>{item.name}</Text>
-                    <Text style={styles.description}>{item.description}</Text>
-                    <Text style={styles.basePrice}>Base price: ${item.price.toFixed(2)}</Text>
+                    <Text style={styles.name}>{meal.name}</Text>
+                    <Text style={styles.description}>{meal.description}</Text>
+                    <Text style={styles.basePrice}>Base price: ${meal.price?.toFixed(2)}</Text>
 
                     <View style={styles.divider} />
 
@@ -50,7 +59,7 @@ export default function DetailsScreen({
             <View style={styles.footer}>
                 <View style={styles.priceContainer}>
                     <Text style={styles.totalLabel}>Total</Text>
-                    <Text style={styles.totalPrice}>${13.99}</Text>
+                    <Text style={styles.totalPrice}>${(meal.price || 0).toFixed(2)}</Text>
                 </View>
                 <View style={styles.footerButtons}>
                     <Button
@@ -78,7 +87,7 @@ const styles = StyleSheet.create({
     center: {
         flex: 1,
         justifyContent: 'center',
-        alignItems: 'center',
+        alignmeals: 'center',
     },
     errorText: {
         fontSize: 16,
@@ -115,7 +124,7 @@ const styles = StyleSheet.create({
     },
     qtySection: {
         flexDirection: 'row',
-        alignItems: 'center',
+        alignmeals: 'center',
         justifyContent: 'space-between',
     },
     qtyLabel: {
@@ -132,7 +141,7 @@ const styles = StyleSheet.create({
     priceContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'center',
+        alignmeals: 'center',
         marginBottom: 12,
     },
     totalLabel: {
