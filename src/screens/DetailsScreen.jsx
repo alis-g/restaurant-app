@@ -2,20 +2,39 @@ import { StyleSheet, View, ScrollView, Image, Text, Alert } from "react-native";
 import Button from "../components/Button";
 import { useEffect, useState } from "react";
 import { mealApi } from "../api";
+import SizeSelector from "../components/SizeSelector";
+import ExtrasSelector from "../components/ExtrasSelector";
 
+export const AVAILABLE_EXTRAS = [
+    'Extra cheese',
+    'Spicy sauce',
+    'Bacon',
+    'Avocado',
+    'Jalapenos'
+]
 
 export default function DetailsScreen({
     route,
     navigation,
 }) {
     const [meal, setMeal] = useState({})
+    const [size, setSize] = useState(null)
+    const [extras, setExtras] = useState([])
     const mealId = route.params.mealId;
 
-    useEffect(()=>{
+    useEffect(() => {
         mealApi.getById(mealId)
-        .then(setMeal)
-        .catch((error) => Alert.alert('Error', error.message))
-    },[mealId])
+            .then(setMeal)
+            .catch((error) => Alert.alert('Error', error.message))
+    }, [mealId])
+
+    const toggleExtra = (extra) => {
+        setExtras((prevExtras) =>
+            prevExtras.includes(extra)
+                ? prevExtras.filter((e) => e !== extra)
+                : [...prevExtras, extra]
+        );
+    };
 
     return (
         <View style={styles.container}>
@@ -35,13 +54,13 @@ export default function DetailsScreen({
 
                     <View style={styles.divider} />
 
-                    {/* <SizeSelector selectedSize={size} onSelect={setSize} /> */}
+                    <SizeSelector selectedSize={size} onSelect={setSize} />
 
-                    {/* <ExtrasSelector
+                    <ExtrasSelector
                         extras={AVAILABLE_EXTRAS}
                         selectedExtras={extras}
                         onToggle={toggleExtra}
-                    /> */}
+                    />
 
                     <View style={styles.divider} />
 
